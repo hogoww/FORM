@@ -1,0 +1,1 @@
+p:=Imply new: (Equal new: (Not new: (Var new: 'a')) rightProp: (Var new: 'b')) rightProp: (False_Const new).p:=p fullClausification .p prettyPrint.fn:=FormeClausale new:p.Transcript show: fn prettyPrint.Transcript clear.

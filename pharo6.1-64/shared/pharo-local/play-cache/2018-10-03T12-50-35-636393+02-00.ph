@@ -1,0 +1,1 @@
+p:=Imply new: (Equal new: (Not new: (Var new: 'a')) rightProp: (Var new: 'b')) rightProp: (False_Const new).p:=p fullClausification.fc:=FormeClausale new:p.fc prettyPrint.Prop testingClausification.
