@@ -16,17 +16,36 @@
     (cons (compile-that-prop (car proplist)) (compile-all-prop (cdr propList)))))
 
 (defun compile-that-prop (prop)
-  (let ((head (car prop)))
-    (cond
-     ((isOr head)
-      (let ((left (compile-that-prop (cadr prop)))
-	    (right (compile-that-Prop (caddr prop))))
-	(concatenate
-	 'string
-	 "Or new:"
-	 left
-	 " rightProp:"
-	 right)))
-     (t (string head)))))
+  (if (null prop)
+      "";we're done
+    (let ((head (car prop)))
+      (cond
+       ;or
+       ((isOr head)
+	(let ((left (compile-that-prop (cadr prop)))
+	      (right (compile-that-Prop (caddr prop))))
+	  (concatenate
+	   'string
+	   "Or new:("
+	   left
+	   ") rightProp:("
+	   right
+	   ")")))
+       
+       ;predicate
+       ((isPredicate head)
+	(let ((terms (compile-that-prop (cadr prop))))
+	  (concatenate
+	   'string
+	   "Predicate new:'"
+	   (string head)
+	   "' terms:("
+	   terms
+	   ")"
+	   )))
+       
+       (t (progn (print "not supported")
+		 (string head)))))))
+
 
 (print (compile-all-prop (file-to-list "input.prop")))
