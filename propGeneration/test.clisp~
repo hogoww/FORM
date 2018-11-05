@@ -1,0 +1,3 @@
+;or
+(defun isOr (symb)
+  (or (= symb 'or) (= symb '\/)))
