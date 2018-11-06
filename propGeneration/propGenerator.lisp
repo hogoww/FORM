@@ -1,4 +1,5 @@
 (load "test.lisp")
+(load "generationFunction.lisp")
 
 (defun file-to-list (filename)
   (get-file-lisp (open filename) '()))
@@ -15,37 +16,38 @@
       nil
     (cons (compile-that-prop (car proplist)) (compile-all-prop (cdr propList)))))
 
-(defun compile-that-prop (prop)
+(defun compile-that-prop (prop &optional inPredicate)
   (if (null prop)
       "";we're done
     (let ((head (car prop)))
       (cond
-       ;or
+       
+       ;BinaryOp
        ((isOr head)
-	(let ((left (compile-that-prop (cadr prop)))
-	      (right (compile-that-Prop (caddr prop))))
-	  (concatenate
-	   'string
-	   "Or new:("
-	   left
-	   ") rightProp:("
-	   right
-	   ")")))
-       
-       ;predicate
-       ((isPredicate head)
-	(let ((terms (compile-that-prop (cadr prop))))
-	  (concatenate
-	   'string
-	   "Predicate new:'"
-	   (string head)
-	   "' terms:("
-	   terms
-	   ")"
-	   )))
-       
-       (t (progn (print "not supported")
-		 (string head)))))))
+	(binaryGeneration "Or" prop))
+       ((isAnd head)
+	(binaryGeneration "And" prop))
+       ((isImply head)
+	(binaryGeneration "Imply" prop))
+       ((isEqual head)
+	(binaryGeneration "Equal" prop))
 
+       ;UnaryOp
+       ((isNot head)
+	(unaryGeneration "Not" prop))
+
+       ;Quantifier
+       ((isExist head)
+	(QuantifierGeneration "Exists" prop))
+       ((isForAll head)
+	(QuantifierGeneration "ForAll" prop))
+	
+       (t
+	(if (not inPredicate)
+	    (predicateAndFuncTermGenerator
+	     (string head)
+	     prop
+	     'predicate);in a predicate, so term(s)
+	  "in a predicate"))))))
 
 (print (compile-all-prop (file-to-list "input.prop")))

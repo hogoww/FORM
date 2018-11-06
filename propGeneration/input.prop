@@ -1,1 +1,1 @@
-(or (P("x")) (P("y")))
+(Exist x (imply (P("x")) (P(y))))
