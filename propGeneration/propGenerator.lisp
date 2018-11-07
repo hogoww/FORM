@@ -1,3 +1,5 @@
+#!/usr/bin/clisp
+
 (load "test.lisp")
 (load "generationFunction.lisp")
 
@@ -16,7 +18,7 @@
       nil
     (cons (compile-that-prop (car proplist)) (compile-all-prop (cdr propList)))))
 
-(defun compile-that-prop (prop &optional inPredicate)
+(defun compile-that-prop (prop)
   (if (null prop)
       "";we're done
     (let ((head (car prop)))
@@ -42,12 +44,20 @@
        ((isForAll head)
 	(QuantifierGeneration "ForAll" prop))
 	
-       (t
-	(if (not inPredicate)
-	    (predicateAndFuncTermGenerator
-	     (string head)
-	     prop
-	     'predicate);in a predicate, so term(s)
-	  "in a predicate"))))))
+       (t;in a predicate
+	(predicateGenerator prop))))))
+	
+(defun compile-those-terms (terms)
+  (if (null terms);we're done on this branch
+      "";f() case
 
-(print (compile-all-prop (file-to-list "input.prop")))
+    (let ((currentTerm (car terms)) (nextTerms (cdr terms)))
+      (concatenate
+       'string
+       (if (atom currentTerm)
+	   (termsGenerator currentTerm);else we're a simple term
+	 (functionGenerator currentTerm));we're in a function
+       (compile-those-terms nextTerms))
+      )))
+
+(mapc 'print (compile-all-prop (file-to-list "input.prop")))

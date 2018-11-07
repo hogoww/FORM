@@ -26,7 +26,7 @@
 
 ;Exists
 (defun isExist (symb)
-  (or (equal symb 'Exist)
+  (or (equal symb 'Exists)
       ))
 
 ;ForAll

@@ -1,1 +1,1 @@
-(Exist x (imply (P("x")) (P(y))))
+(Exists x (imply (P x) (P y)))
