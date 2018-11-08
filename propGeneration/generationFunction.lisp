@@ -76,7 +76,7 @@ operand
      (concatenate
       'string
       (printIndent indent)
-      "add:(Function"))
+      "add:(FuncTerm"))
      " new:'"
      symbName
      "' "
@@ -92,7 +92,7 @@ operand
 (printIndent (+ indent 2))
 "yourself)"
 (if (equal type 'function)
-    ")"
+    ");"
   )
 "
 "
