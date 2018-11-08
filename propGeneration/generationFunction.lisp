@@ -49,23 +49,64 @@ operand
 "
      )))
 
-(defun quantifierGeneration (operator prop indent)
-  (let ((var (string-downcase (cadr prop)))
-	(operand (compile-that-prop (caddr prop) (+ 1 indent))))
-	(concatenate
-	 'string
-	 operator
-	 " new:'"
-	 var
-	 "' Property:
+
+(defun quantifierVarGeneration (operator prop indent)
+  (let ((var (string-downcase prop)))
+    (concatenate
+     'string
+     (printIndent indent)
+     "("
+     operator
+     " new:'"
+     var
+     "' Property:
 "
-	 (printIndent indent)
-"("
-operand
-(printIndent indent)
-	 ")
+
+     )))
+
+(defun quantifierPropertyGeneration (prop indent)
+  (let ((operand (compile-that-prop (car prop) indent)))
+
+    (concatenate
+     'string
+     (printIndent indent)
+     "("
+     operand
+     (printIndent indent)
+     ")
 "
-	 )))
+  )))
+
+(defun variadicQuantifierGenerationRec (operator prop indent count)
+  (if (< count 1)
+      (quantifierPropertyGeneration prop indent)
+    (concatenate
+     'string
+     (quantifierVarGeneration operator (car prop) indent)
+      (variadicQuantifierGenerationRec operator (cdr prop) (+ indent 1) (- count 1)))))
+
+(defun printEndingParenthesis (count indent)
+  (if (< count 1)
+      "";done
+    (concatenate
+     'string
+     (printIndent indent)
+     ")
+"
+     (printEndingParenthesis (- count 1) (- indent 1)))))
+
+(defun variadicQuantifierGeneration(operator prop indent)
+  (if (< (length prop) 3);minimum is exist var prop
+      (error "~s needs at least a term to quantify" operator)
+    (concatenate
+     'string
+     (variadicQuantifierGenerationRec
+      operator;We let the kind of operator that it is
+      (cdr prop);we remove the operator, and let the operand
+      (- indent 1)
+      (- (length prop) 2));we want to do it (size - operator - operand) -1.
+      (printEndingParenthesis (- (length prop) 2) indent))))
+
 
 ;type = 'predicate or'functerm.
 (defun predicateAndFuncTermGenerator (symbName terms type indent)

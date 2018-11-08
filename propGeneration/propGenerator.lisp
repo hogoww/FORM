@@ -26,23 +26,23 @@
       (cond
        ;BinaryOp
        ((isOr head)
-	(binaryGeneration "Or" prop indent))
+	(binaryGeneration orClass prop indent))
        ((isAnd head)
-	(binaryGeneration "And" prop indent))
+	(binaryGeneration andClass prop indent))
        ((isImply head)
-	(binaryGeneration "Imply" prop indent))
+	(binaryGeneration implyClass prop indent))
        ((isEqual head)
-	(binaryGeneration "Equal" prop indent))
+	(binaryGeneration equalClass prop indent))
 
        ;UnaryOp
        ((isNot head)
-	(unaryGeneration "Not" prop indent))
+	(unaryGeneration notClass prop indent))
 
        ;Quantifier
        ((isExist head)
-	(QuantifierGeneration "Exists" prop indent))
+	(variadicQuantifierGeneration existsClass prop indent))
        ((isForAll head)
-	(QuantifierGeneration "ForAll" prop indent)) 
+	(variadicQuantifierGeneration forallClass prop indent)) 
 	
        (t;in a predicate
 	(predicateGenerator prop indent))))))
@@ -61,4 +61,9 @@
       )))
 
 
-(mapc 'print (compile-all-prop (file-to-list "input.prop")))
+(mapc (lambda (x);remove the quotes, better printing
+	(format t "~d
+
+" x))
+      (reverse;to put it back in the right order
+       (compile-all-prop (file-to-list "input.prop"))))
