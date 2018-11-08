@@ -1,5 +1,6 @@
 #!/usr/bin/clisp
 
+(load "configuration.lisp")
 (load "test.lisp")
 (load "generationFunction.lisp")
 
@@ -16,38 +17,37 @@
 (defun compile-all-prop (propList)
   (if (or (null propList) (null (car propList)))
       nil
-    (cons (compile-that-prop (car proplist)) (compile-all-prop (cdr propList)))))
+    (cons (compile-that-prop (car proplist) 0) (compile-all-prop (cdr propList)))))
 
-(defun compile-that-prop (prop)
+(defun compile-that-prop (prop indent)
   (if (null prop)
       "";we're done
     (let ((head (car prop)))
       (cond
-       
        ;BinaryOp
        ((isOr head)
-	(binaryGeneration "Or" prop))
+	(binaryGeneration "Or" prop indent))
        ((isAnd head)
-	(binaryGeneration "And" prop))
+	(binaryGeneration "And" prop indent))
        ((isImply head)
-	(binaryGeneration "Imply" prop))
+	(binaryGeneration "Imply" prop indent))
        ((isEqual head)
-	(binaryGeneration "Equal" prop))
+	(binaryGeneration "Equal" prop indent))
 
        ;UnaryOp
        ((isNot head)
-	(unaryGeneration "Not" prop))
+	(unaryGeneration "Not" prop indent))
 
        ;Quantifier
        ((isExist head)
-	(QuantifierGeneration "Exists" prop))
+	(QuantifierGeneration "Exists" prop indent))
        ((isForAll head)
-	(QuantifierGeneration "ForAll" prop))
+	(QuantifierGeneration "ForAll" prop indent)) 
 	
        (t;in a predicate
-	(predicateGenerator prop))))))
+	(predicateGenerator prop indent))))))
 	
-(defun compile-those-terms (terms)
+(defun compile-those-terms (terms indent)
   (if (null terms);we're done on this branch
       "";f() case
 
@@ -55,9 +55,10 @@
       (concatenate
        'string
        (if (atom currentTerm)
-	   (termsGenerator currentTerm);else we're a simple term
-	 (functionGenerator currentTerm));we're in a function
-       (compile-those-terms nextTerms))
+	   (termsGenerator currentTerm indent);else we're a simple term
+	 (functionGenerator currentTerm indent));we're in a function
+       (compile-those-terms nextTerms indent))
       )))
+
 
 (mapc 'print (compile-all-prop (file-to-list "input.prop")))

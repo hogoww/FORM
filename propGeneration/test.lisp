@@ -1,42 +1,32 @@
+(defun equalOp (op listOp)
+  (if (null listOp)
+      nil;neutral for or
+    (or (equal op (car listOp)) (equalOp op (cdr listOp)))))
+
 ;or
 (defun isOr (symb)
-  (or (equal symb 'or) ;(equal symb '\\/)
-      ))
+  (equalOp symb orOp))
 
 ;and
 (defun isAnd (symb)
-  (or (equal symb 'and) ;(equal symb '/\\)
-      ))
+  (equalOp symb andOp))
 
 ;imply
 (defun isImply (symb)
-  (or (equal symb 'imply) ;(equal symb '/\\)
-      ))
+  (equalOp symb implyOp))
 
 ;equal
 (defun isEqual (symb)
-  (or (equal symb 'equal)
-      ;(equal symb '/\\)
-      ))
+  (equalOp symb equalOp))
 
 ;not
 (defun isNot (symb)
-  (or (equal symb 'not)
-      ))
+  (equalOp symb notOp))
 
 ;Exists
 (defun isExist (symb)
-  (or (equal symb 'Exists)
-      ))
+  (equalOp symb existsOp))
 
 ;ForAll
 (defun isForAll (symb)
-  (or (equal symb 'Forall)
-      ))
-
-;Predicate are have an upper case as first character
-;(defun isPredicate(symb)
-; (if (atom symb)
-;      (upper-case-p (coerce symb 'character));if that's an atomic char
-;    (upper-case-p (schar symb 0))));if it's a string, we check the first char
-
+  (equalOp symb forallOp))

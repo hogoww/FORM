@@ -1,1 +1,1 @@
-(Exists x (imply (P x) (P y)))
+(ForAll y (Exists x (~ (or (P (f y (g x))) (P y z)))))

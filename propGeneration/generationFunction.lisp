@@ -1,81 +1,117 @@
-(defun binaryGeneration (operator prop)
-  (let ((left (compile-that-prop (cadr prop)))
-	(right (compile-that-Prop (caddr prop))))
+
+
+(defun printIndent (nb)
+  (if (< nb 0)
+      ""
+    (concatenate
+     'string
+     indent-string
+     (printIndent (- nb 1))
+     )))
+
+(defun binaryGeneration (operator prop indent)
+  (let ((left (compile-that-prop (cadr prop) (+ 1 indent)))
+	(right (compile-that-Prop (caddr prop) (+ 1 indent))))
     (concatenate
      'string
      operator
      " new:
-("
-     left
+"
+     (printIndent indent)
+"("
+left
+(printIndent indent)
+")
+"
+     (printIndent (- indent 1));indent is supposed to be the caller one, so, -1.
+"rightProp:
+"
+   (printIndent indent)
+"("
+right
+(printIndent indent)
      ")
-rightProp:
-("
-     right
-     ")"
+"
      )))
 
-(defun unaryGeneration (operator prop)
-  (let ((operand (compile-that-prop (cadr prop))))
+(defun unaryGeneration (operator prop indent)
+  (let ((operand (compile-that-prop (cadr prop) (+ 1 indent))))
     (concatenate
      'string
      operator
      " new:
-("
-     operand
-     ")"
+"
+     (printIndent indent)
+"("
+operand
+(printIndent indent)
+     ")
+"
      )))
 
-(defun quantifierGeneration (operator prop)
+(defun quantifierGeneration (operator prop indent)
   (let ((var (string-downcase (cadr prop)))
-	(operand (compile-that-prop (caddr prop))))
+	(operand (compile-that-prop (caddr prop) (+ 1 indent))))
 	(concatenate
 	 'string
 	 operator
 	 " new:'"
 	 var
-	 "'
-Property:
-("
-	 operand
-	 ")"
+	 "' Property:
+"
+	 (printIndent indent)
+"("
+operand
+(printIndent indent)
+	 ")
+"
 	 )))
 
 ;type = 'predicate or'functerm.
-(defun predicateAndFuncTermGenerator (symbName terms type)
+(defun predicateAndFuncTermGenerator (symbName terms type indent)
   (concatenate
    'string
    (if (equal type 'predicate)
        "Predicate"
-     "add:
-(Function")
+     (concatenate
+      'string
+      (printIndent indent)
+      "add:(Function"))
      " new:'"
      symbName
      "' "
      (if (equal type 'predicate)
 	 "fromList:"
        "Variables:")
-     "(LinkedList new "
-     (compile-those-terms terms)
-;     (if (not (equal type 'predicate)); CARE "NOT" HERE
-         ""
- ;    )
-     "yourself)"
+     "
+"
+(printIndent (+ indent 1))
+"(LinkedList new 
+"
+     (compile-those-terms terms (+ indent 2))
+(printIndent (+ indent 2))
+"yourself)"
+(if (equal type 'function)
+    ")"
+  )
+"
+"
 ))
 
 ;specialized way to call the same func
-(defun predicateGenerator (prop)
-  (predicateAndFuncTermGenerator (string (car prop))  (cdr prop) 'predicate))
+(defun predicateGenerator (prop indent)
+  (predicateAndFuncTermGenerator (string (car prop))  (cdr prop) 'predicate indent))
 
-(defun functionGenerator (prop)
-  (predicateAndFuncTermGenerator (string (car prop)) (cdr prop) 'function))
+(defun functionGenerator (prop indent)
+  (predicateAndFuncTermGenerator (string (car prop)) (cdr prop) 'function indent))
 
 
-(defun termsGenerator (term)
+(defun termsGenerator (term indent)
   (concatenate
    'string
-   "add:
-(Term new:'"
-(string term)
-"');"
+   (printIndent indent)
+   "add:(Term new:'"
+(string-downcase term)
+"');
+"
 ))
-
