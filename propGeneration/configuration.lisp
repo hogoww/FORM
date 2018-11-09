@@ -1,5 +1,5 @@
 ;indent
-(setf indent-string "   ")
+(setf indent-string "     ")
 
 ;logic operators
 (setf orOp '(or))
