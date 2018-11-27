@@ -1,4 +1,5 @@
 ;indent
+(setf compact-mode nil);false
 (setf indent-string "     ")
 
 ;logic operators

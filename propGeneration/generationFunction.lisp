@@ -51,12 +51,14 @@ operand
 
 
 (defun quantifierVarGeneration (operator prop indent count)
-  (let ((var (string-downcase (car prop))))
+  (let ((var (car prop)))
     (concatenate
      'string
      operator
      " new:'"
-     var
+     (if (atom var)
+	 (string-downcase var)
+       (error "~s is only quantifying atomic variable" operator))
      "' Property:
 "
      (printIndent indent)
@@ -65,7 +67,7 @@ operand
 	 (compile-that-prop (cadr prop) (+ indent 1))
        (quantifierVarGeneration
 	operator
-	(cdr prop)
+	(cdr prop)/
 	(+ indent 1)
 	(- count 1))
        )
@@ -76,18 +78,6 @@ operand
      )))
 
 
-
-;; (defun quantifierPropertyGeneration (prop indent)
-;;   (let ((operand (compile-that-prop (car prop) indent)))
-;;     (concatenate
-;;      'string
-;;      (printIndent indent)
-;;      "("
-;;      operand
-;;      (printIndent indent)
-;;      ")
-;; "
-;;   )))
 
 
 
