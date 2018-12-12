@@ -1,8 +1,11 @@
 ;indent
-(setf compact-mode nil);false
-(setf indent-string "     ")
+(setf compact-mode nil);True if you want a well formed, easy to read. False if you want a conpact declaration
+(setf indent-string "     ");What the indent should look like
+(setf base-indent 1);Where to start for the indent. For a function it's usually 1. for the playground usually 0.
 
-;logic operators
+;logic operators and constants
+(setf trueConst '(True T))
+(setf falseConst '(False F))
 (setf orOp '(or))
 (setf andOp '(and))
 (setf implyOp '(-> imply))

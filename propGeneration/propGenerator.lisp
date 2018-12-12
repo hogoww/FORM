@@ -17,7 +17,7 @@
 (defun compile-all-prop (propList)
   (if (or (null propList) (null (car propList)))
       nil
-    (cons (compile-that-prop (car proplist) 0) (compile-all-prop (cdr propList)))))
+    (cons (compile-that-prop (car proplist) base-indent) (compile-all-prop (cdr propList)))))
 
 (defun compile-that-prop (prop indent)
   (if (null prop)
@@ -59,6 +59,8 @@
 	 (functionGenerator currentTerm indent));we're in a function
        (compile-those-terms nextTerms indent))
       )))
+
+
 
 
 (mapc (lambda (x);remove the quotes, better printing

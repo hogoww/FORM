@@ -1,2 +1,1 @@
-(imply (forall x (P x)) (forall x (P x)))
-(Imply (forall x (And (P x) (Q x))) (And (Forall x (P x)) (Forall x (Q x))))
+(And (Or (P) (Q)) (Or (Q) (P)))

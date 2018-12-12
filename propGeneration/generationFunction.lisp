@@ -1,6 +1,12 @@
 
 
 (defun printIndent (nb)
+  (if (not compact-mode)
+      (printIndentR nb)
+    ""))
+
+(defun printIndentR (nb)
+  
   (if (< nb 0)
       ""
     (concatenate
@@ -15,23 +21,27 @@
     (concatenate
      'string
      operator
-     " new:
-"
-     (printIndent indent)
-"("
-left
-(printIndent indent)
+     " new:"
+     (if (not compact-mode) "
 ")
-"
+     (printIndent indent)
+     "("
+     left
+     (printIndent indent)
+     ")"
+     (if (not compact-mode) "
+")
      (printIndent (- indent 1));indent is supposed to be the caller one, so, -1.
-"rightProp:
-"
-   (printIndent indent)
-"("
-right
-(printIndent indent)
-     ")
-"
+     "rightProp:"
+     (if (not compact-mode) "
+")
+     (printIndent indent)
+     "("
+     right
+     (printIndent indent)
+     ")"
+     (if (not compact-mode) "
+")
      )))
 
 (defun unaryGeneration (operator prop indent)
@@ -39,14 +49,16 @@ right
     (concatenate
      'string
      operator
-     " new:
-"
+     " new:"
+     (if (not compact-mode) "
+")
      (printIndent indent)
-"("
-operand
-(printIndent indent)
-     ")
-"
+     "("
+     operand
+     (printIndent indent)
+     ")"
+     (if (not compact-mode) "
+")
      )))
 
 
@@ -59,8 +71,9 @@ operand
      (if (atom var)
 	 (string-downcase var)
        (error "~s is only quantifying atomic variable" operator))
-     "' Property:
-"
+     "' Property:"
+     (if (not compact-mode) "
+")
      (printIndent indent)
      "("
      (if (< count 1)
@@ -73,8 +86,9 @@ operand
        )
      
      (printIndent indent)
-     ")
-"
+     ")"
+     (if (not compact-mode) "
+")
      )))
 
 
@@ -93,7 +107,7 @@ operand
       (- (length prop) 3));we want to do it (size - operator - operand) -1.
      )))
 
-;type = 'predicate or'functerm.
+					;type = 'predicate or'functerm.
 (defun predicateAndFuncTermGenerator (symbName terms type indent)
   (concatenate
    'string
@@ -103,26 +117,27 @@ operand
       'string
       (printIndent indent)
       "add:(FuncTerm"))
-     " new:'"
-     symbName
-     "' "
-     (if (equal type 'predicate)
-	 "fromList:"
-       "Variables:")
-     "
-"
-(printIndent (+ indent 1))
-"(LinkedList new 
-"
-     (compile-those-terms terms (+ indent 2))
-(printIndent (+ indent 2))
-"yourself)"
-(if (equal type 'function)
-    ");"
-  )
-"
-"
-))
+   " new:'"
+   symbName
+   "' "
+   (if (equal type 'predicate)
+       "fromList:"
+     "Variables:")
+   (if (not compact-mode) "
+")
+   (printIndent (+ indent 1))
+   "(LinkedList new "
+   (if (not compact-mode) "
+")
+   (compile-those-terms terms (+ indent 2))
+   (printIndent (+ indent 2))
+   "yourself)"
+   (if (equal type 'function)
+       ");"
+     )
+   (if (not compact-mode) "
+")
+   ))
 
 ;specialized way to call the same func
 (defun predicateGenerator (prop indent)
@@ -137,7 +152,8 @@ operand
    'string
    (printIndent indent)
    "add:(Term new:'"
-(string-downcase term)
-"');
-"
-))
+   (string-downcase term)
+   "');"
+   (if (not compact-mode) "
+")
+   ))
