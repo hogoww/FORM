@@ -68,4 +68,4 @@
 
 " x))
       (reverse;to put it back in the right order
-       (compile-all-prop (file-to-list "input.prop"))))
+       (compile-all-prop (file-to-list input-file))))

@@ -1,1 +1,1 @@
-(And (Or (P) (Q)) (Or (Q) (P)))
+(Or P P)
