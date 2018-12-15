@@ -1,7 +1,7 @@
-CLisp program used to transform prefixed first order logical proposition to their declaration for the Smalltalk program in the ../pharo/ directory.
+CLisp program is used to transform prefixed first order logical proposition to their declaration for the Smalltalk program in the ../pharo/ directory.
 
 The Clisp program is necessary to run the script.
-You may have to 
+You may have to chmod 111 propGenerator.lisp to be able to execute it.
 
 A simple exemple would be:
 (Or (P x) (P q))
@@ -19,13 +19,13 @@ Or new:
      yourself)
   )
 
-It allows a more general syntax, to generate a language and implementation specific Object tedious to write by hand.
+It allows a more general syntax, and to generate directly into the target language implementation the object initialization, which is tedious to write by hand.
 
    	  ###  Usage ###
 
 Put in the input file ("input.prop" by default) the proposition(s) that you wish to transform.
 Then just run the script ./propGeneration.
-The output will be displayed on the standart output, so it's pipe able to another program (such as a clipboard one).
+The output will be displayed on the standart output,to be able to pipe it to another program (such as a clipboard one).
 
     	  ###  How to write a proposition  ###
 
