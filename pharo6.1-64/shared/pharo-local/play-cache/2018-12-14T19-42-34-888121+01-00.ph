@@ -1,1 +1,1 @@
-Prop testEverything.Transcript clear.Prop testingUnification.Prop testingClausification.Prop testingSkolemn.
+Prop testEverything.Transcript clear.Prop testingUnification.Prop testingClausification.Prop testingSkolemn.Prop testingFactorisation.Prop testingMatch.Prop testingResolvante.
