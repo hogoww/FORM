@@ -1,1 +1,1 @@
-Prop testEverything.Transcript clear.Prop testingUnification.Prop testingClausification.Prop testingSkolemn.Prop testingFactorisation.Prop testingMatch.Prop testingResolvante.
+Prop testEverything.Transcript clear.Prop testingUnification.Prop testingClausification.Prop testingSkolemn.Prop testingFactorisation.Prop testingMatch.Prop testingResolvante.MCHttpRepository	location: 'http://smalltalkhub.com/mc/hogoww/FORM/main'	user: 'hogoww'	password: '3404911057'	

@@ -3,6 +3,14 @@
       nil;neutral for or
     (or (equal op (car listOp)) (equalOp op (cdr listOp)))))
 
+(defun isTrueConst (symb)
+  (equalOp symb trueConst))
+
+(defun isFalseConst (symb)
+  (equalOp symb falseConst))
+
+    
+
 ;or
 (defun isOr (symb)
   (equalOp symb orOp))

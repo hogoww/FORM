@@ -17,13 +17,23 @@
 (defun compile-all-prop (propList)
   (if (or (null propList) (null (car propList)))
       nil
-    (cons (compile-that-prop (car proplist) base-indent) (compile-all-prop (cdr propList)))))
+    (cons
+     (concatenate
+      'string
+      (printIndent base-indent)
+      (compile-that-prop (car proplist) (+ base-indent 1)))
+     (compile-all-prop (cdr propList)))))
 
 (defun compile-that-prop (prop indent)
   (if (null prop)
       "";we're done
     (let ((head (car prop)))
       (cond
+       ;consts
+       ((isTrueConst head)
+	(constGeneration trueConstClass prop indent))
+       ((isFalseConst head)
+	(constGeneration falseConstClass prop indent))
        ;BinaryOp
        ((isOr head)
 	(binaryGeneration orClass prop indent))

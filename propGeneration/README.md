@@ -29,8 +29,16 @@ The output will be displayed on the standart output,to be able to pipe it to ano
 
     	  ###  How to write a proposition  ###
 
+#general rules
 The proposition are wrote in a prefixed lisp way.
 /!\ Everything is case INsensitive.
+Name are resolved in the following order:
+     Constant > UnaryOp > BinaryOp > Predicates.
+
+#Constant
+A constant is surrounded by parenthesis.
+(T)
+(False)
 
 #Predicates the predicates and terms
 A predicate is also surrounded by parenthesis.
@@ -71,8 +79,6 @@ The following things are configurable in the "configuration.lisp" file:
 
 -The list of operator's symbols is modifiable, and variadic. /!\ The symbols are case INsensitive.
 -The list of the operator's classes is modifiable without having to look in this tool's code.
-
-Those lists aren't implemented yet for the constants.
 
 -By default, the generated object is generated on several lines, with a correct indentation.
 A compact mode is also available ("compact-mode" in the indent section).

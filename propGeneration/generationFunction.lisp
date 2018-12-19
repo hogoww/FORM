@@ -6,7 +6,6 @@
     ""))
 
 (defun printIndentR (nb)
-  
   (if (< nb 0)
       ""
     (concatenate
@@ -15,51 +14,67 @@
      (printIndent (- nb 1))
      )))
 
-(defun binaryGeneration (operator prop indent)
-  (let ((left (compile-that-prop (cadr prop) (+ 1 indent)))
-	(right (compile-that-Prop (caddr prop) (+ 1 indent))))
+(defun constGeneration (operator prop indent)
+  (if (not (eq (length prop) 1))
+      (error "A constant takes exactly one argument (it's name).")
     (concatenate
      'string
      operator
-     " new:"
+     " new"
      (if (not compact-mode) "
 ")
-     (printIndent indent)
-     "("
-     left
-     (printIndent indent)
-     ")"
-     (if (not compact-mode) "
+    )))
+
+
+(defun binaryGeneration (operator prop indent)
+  (if (not (eq (length prop) 3))
+      (error "~s is an binary operator and takes exactly two proposition as argument." operator)
+    (let ((left (compile-that-prop (cadr prop) (+ 1 indent)))
+	  (right (compile-that-Prop (caddr prop) (+ 1 indent))))
+      (concatenate
+       'string
+       operator
+       " new:"
+       (if (not compact-mode) "
 ")
-     (printIndent (- indent 1));indent is supposed to be the caller one, so, -1.
-     "rightProp:"
-     (if (not compact-mode) "
+       (printIndent indent)
+       "("
+       left
+       (printIndent indent)
+       ")"
+       (if (not compact-mode) "
 ")
-     (printIndent indent)
-     "("
-     right
-     (printIndent indent)
-     ")"
-     (if (not compact-mode) "
+       (printIndent (- indent 1));indent is supposed to be the caller one, so, -1.
+       "rightProp:"
+       (if (not compact-mode) "
 ")
-     )))
+       (printIndent indent)
+       "("
+       right
+       (printIndent indent)
+       ")"
+       (if (not compact-mode) "
+")
+       ))))
 
 (defun unaryGeneration (operator prop indent)
-  (let ((operand (compile-that-prop (cadr prop) (+ 1 indent))))
-    (concatenate
-     'string
-     operator
-     " new:"
-     (if (not compact-mode) "
+  (if (not (eq (length prop) 2))
+      (error "~s is an unary operator and takes exactly one proposition as argument." operator)
+    (let ((operand (compile-that-prop (cadr prop) (+ 1 indent))))
+      (concatenate
+       'string
+       operator
+       " new:"
+       (if (not compact-mode) "
 ")
-     (printIndent indent)
-     "("
-     operand
-     (printIndent indent)
-     ")"
-     (if (not compact-mode) "
+       (printIndent indent)
+       "("
+       operand
+       (printIndent indent)
+       ")"
+       (if (not compact-mode) "
 ")
-     )))
+       ))))
 
 
 (defun quantifierVarGeneration (operator prop indent count)
@@ -70,7 +85,7 @@
      " new:'"
      (if (atom var)
 	 (string-downcase var)
-       (error "~s is only quantifying atomic variable" operator))
+       (error "~s is only quantifying atomic variable." operator))
      "' Property:"
      (if (not compact-mode) "
 ")
@@ -80,11 +95,10 @@
 	 (compile-that-prop (cadr prop) (+ indent 1))
        (quantifierVarGeneration
 	operator
-	(cdr prop)/
+	(cdr prop)
 	(+ indent 1)
 	(- count 1))
        )
-     
      (printIndent indent)
      ")"
      (if (not compact-mode) "
@@ -97,7 +111,7 @@
 
 (defun variadicQuantifierGeneration(operator prop indent)
   (if (< (length prop) 3);minimum is exist var prop
-      (error "~s needs at least a term to quantify" operator)
+      (error "~s needs at least a term to quantify, and exactly one property as the next argument." operator)
     (concatenate
      'string
      (quantifierVarGeneration
@@ -157,3 +171,4 @@
    (if (not compact-mode) "
 ")
    ))
+
